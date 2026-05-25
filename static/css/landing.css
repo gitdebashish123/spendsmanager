@@ -216,6 +216,64 @@
 .dbar-bills  { background: #7c6bc9; }
 
 /* ------------------------------------------------------------------ */
+/* Video modal                                                         */
+/* ------------------------------------------------------------------ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.modal-overlay[hidden] { display: none; }
+
+.modal-box {
+    background: var(--ink);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+    padding: 1rem;
+}
+
+.modal-close {
+    position: absolute;
+    top: -2.25rem;
+    right: 0;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.modal-close:hover { opacity: 1; }
+
+.modal-video {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 */
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.modal-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ------------------------------------------------------------------ */
 /* Responsive                                                          */
 /* ------------------------------------------------------------------ */
 
