@@ -1,6 +1,10 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.db import get_db, init_db, seed_db, create_user, get_user_by_email
+from database.queries import (
+    get_user_by_id, get_summary_stats,
+    get_recent_transactions, get_category_breakdown,
+)
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-change-in-prod"
@@ -86,7 +90,19 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    user_id = session["user_id"]
+    user = get_user_by_id(user_id)
+    if user is None:
+        abort(404)
+    return render_template(
+        "profile.html",
+        user=user,
+        stats=get_summary_stats(user_id),
+        transactions=get_recent_transactions(user_id, limit=10),
+        categories=get_category_breakdown(user_id),
+    )
 
 
 @app.route("/expenses/add")
