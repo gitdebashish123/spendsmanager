@@ -86,7 +86,38 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    user = {
+        "name": session.get("user_name", "Demo User"),
+        "email": "demo@spendly.com",
+        "member_since": "January 2026",
+    }
+    stats = {
+        "total_spent": 403.74,
+        "transaction_count": 8,
+        "top_category": "Bills",
+    }
+    transactions = [
+        {"date": "2026-05-22", "description": "Coffee and snacks",  "category": "Food",          "amount": 12.50},
+        {"date": "2026-05-19", "description": "Miscellaneous",       "category": "Other",         "amount": 22.75},
+        {"date": "2026-05-16", "description": "New shoes",           "category": "Shopping",      "amount": 89.99},
+        {"date": "2026-05-13", "description": "Netflix + Spotify",   "category": "Entertainment", "amount": 35.00},
+        {"date": "2026-05-10", "description": "Pharmacy",            "category": "Health",        "amount": 60.00},
+    ]
+    categories = [
+        {"name": "Bills",         "amount": 120.00, "pct": 30},
+        {"name": "Shopping",      "amount":  89.99, "pct": 22},
+        {"name": "Health",        "amount":  60.00, "pct": 15},
+        {"name": "Food",          "amount":  58.00, "pct": 14},
+        {"name": "Other",         "amount":  22.75, "pct":  6},
+        {"name": "Entertainment", "amount":  35.00, "pct":  9},
+        {"name": "Transport",     "amount":  18.00, "pct":  4},
+    ]
+    return render_template("profile.html",
+                           user=user, stats=stats,
+                           transactions=transactions, categories=categories)
 
 
 @app.route("/expenses/add")
